@@ -1,3 +1,4 @@
+
 {
   "root": true,
   "extends": "airbnb",
@@ -10,9 +11,13 @@
     "no-lonely-if": "off",
     "class-methods-use-this": "off",
     "arrow-body-style": "off",
-    "no-loop-func": "off"
+    "no-loop-func": "off",
+    "quotes": "off",
+    "implicit-arrow-linebreak":"off",
+    "prefer-default-export": "off",
+    "max-classes-per-file": "off"
   },
-  "ignorePatterns": ["*.md", "*.png", "*.jpeg", "*.jpg"],
+  "ignorePatterns": ["*.md", "*.png", "*.jpeg", "*.jpg","playground.js"],
   "settings": {
     "react": {
       "version": "18.2.0"
