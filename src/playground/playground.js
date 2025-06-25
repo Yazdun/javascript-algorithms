@@ -1,17 +1,18 @@
-import Comparator from "../utils/comparator/Comparator";
+import Comparator from "../utils/comparator/Comparator.js";
 
-export class LinkedListNode {
-  constructor(value, next = null) {
+export class DoublyLinkedListNode {
+  constructor(value, next = null, previous = null) {
     this.value = value;
     this.next = next;
+    this.previous = previous;
   }
 
-  toString(cb) {
-    return cb ? cb(this.value) : String(this.value);
+  toString(callback) {
+    return callback ? callback(this.value) : `${this.value}`;
   }
 }
 
-export class LinkedList {
+export class DoublyLinkedList {
   constructor(comparatorFunction) {
     this.head = null;
     this.tail = null;
@@ -19,20 +20,16 @@ export class LinkedList {
   }
 
   toArray() {
-    const arr = [];
-
-    if (!this.head) {
-      return arr;
-    }
+    const nodes = [];
 
     let pointer = this.head;
 
     while (pointer) {
-      arr.push(pointer);
+      nodes.push(pointer);
       pointer = pointer.next;
     }
 
-    return arr;
+    return nodes;
   }
 
   toString(callback) {
@@ -41,27 +38,29 @@ export class LinkedList {
       .toString();
   }
 
-  append(val) {
-    let newNode = new LinkedListNode(val);
+  append(value) {
+    let newNode = new DoublyLinkedListNode(value);
 
     if (!this.head) {
       this.head = newNode;
       this.tail = newNode;
     } else {
       this.tail.next = newNode;
+      newNode.previous = this.tail;
       this.tail = newNode;
     }
 
     return this;
   }
 
-  prepend(val) {
-    let newNode = new LinkedListNode(val);
+  prepend(value) {
+    let newNode = new DoublyLinkedListNode(value);
 
     if (!this.head) {
       this.head = newNode;
       this.tail = newNode;
     } else {
+      this.head.prev = newNode;
       newNode.next = this.head;
       this.head = newNode;
     }
@@ -69,137 +68,117 @@ export class LinkedList {
     return this;
   }
 
-  insert(val, rawIdx) {
-    let newNode = new LinkedListNode(val);
-
-    if (rawIdx < 0 || rawIdx === 0) {
-      this.prepend(val);
-      return true;
-    }
-
-    let current = this.head;
-    let idx = 1;
-
-    while (current) {
-      if (rawIdx === idx) break;
-      current = current.next;
-      idx++;
-    }
-
-    if (current) {
-      newNode.next = current.next;
-      current.next = newNode;
-    } else if (this.tail) {
-      this.tail.next = newNode;
-      this.tail = newNode;
-    } else {
-      this.head = newNode;
-      this.tail = newNode;
-    }
-
-    return true;
+  fromArray(arr) {
+    arr.forEach((i) => this.append(i));
   }
 
   delete(value) {
     let deletedNode = null;
+    let currNode = this.head;
 
-    if (!this.head) {
-      return deletedNode;
-    }
+    while (currNode) {
+      if (this.compare.equal(currNode.value, value)) {
+        deletedNode = currNode;
 
-    while (this.head && this.head.value === value) {
-      deletedNode = this.head;
-      this.head = this.head.next;
-    }
-
-    let currentNode = this.head;
-
-    if (currentNode) {
-      while (currentNode.next) {
-        if (currentNode.next.value === value) {
-          deletedNode = currentNode.next;
-          currentNode.next = currentNode.next.next;
+        if (this.head === deletedNode) {
+          this.head = this.head.next;
+          if (this.head) this.head.previous = null;
+          else this.tail = null;
+        } else if (this.tail === deletedNode) {
+          this.tail = this.tail.previous;
+          if (this.tail) this.tail.next = null;
+          else this.head = null;
         } else {
-          currentNode = currentNode.next;
+          let nextNode = deletedNode.next;
+          let prevNode = deletedNode.previous;
+          prevNode.next = nextNode;
+          nextNode.previous = prevNode;
         }
       }
-    }
 
-    if (this.tail.value === value) {
-      this.tail = currentNode;
+      currNode = currNode.next;
     }
-
     return deletedNode;
   }
 
-  deleteHead() {
-    let deletedHead = this.head;
-
-    if (!this.head) {
-      return null;
-    }
-
-    if (!this.head.next) {
-      this.tail = null;
-    }
-
-    this.head = deletedHead.next;
-
-    return deletedHead;
-  }
-
   deleteTail() {
-    let deletedTail = this.tail;
+    if (!this.tail) return null;
+
+    let deletedNode = this.tail;
 
     if (this.head === this.tail) {
       this.head = null;
       this.tail = null;
 
-      return deletedTail;
+      return deletedNode;
     }
 
-    let current = this.head;
+    this.tail = this.tail.previous;
+    this.tail.next = null;
 
-    while (current.next) {
-      if (current.next.next === null) {
-        deletedTail = current.next;
-        current.next = null;
-        this.tail = current;
-      } else {
-        current = current.next;
-      }
-    }
-
-    return deletedTail;
+    return deletedNode;
   }
 
-  fromArray(arr) {
-    arr.forEach((el) => this.append(el));
+  deleteHead() {
+    if (!this.head) return null;
+
+    let deletedNode = this.head;
+
+    if (!this.head.next) {
+      this.head = null;
+      this.tail = null;
+      return deletedNode;
+    }
+
+    this.head = this.head.next;
+    this.head.previous = null;
+
+    return deletedNode;
   }
 
   find({ value, callback }) {
     if (!this.head) return null;
-    let currentNode = this.head;
-    while (currentNode) {
-      if (callback && callback(currentNode.value)) return currentNode;
-      if (this.compare.equal(currentNode.value, value)) return currentNode;
-      currentNode = currentNode.next;
+    let currNode = this.head;
+    while (currNode) {
+      if (callback && callback(currNode.value)) return currNode;
+      if (value !== undefined && this.compare.equal(currNode.value, value))
+        return currNode;
+
+      currNode = currNode.next;
     }
-    return currentNode;
+    return null;
   }
 
   reverse() {
     let currNode = this.head;
-    let nextNode = null;
-    let prevNode = null;
+    let prevNode,
+      nextNode = null;
+
     while (currNode) {
+      prevNode = currNode.previous;
       nextNode = currNode.next;
+
       currNode.next = prevNode;
+      currNode.previous = nextNode;
+
       prevNode = currNode;
       currNode = nextNode;
     }
+
     this.tail = this.head;
     this.head = prevNode;
+
     return this;
   }
 }
+const linkedList = new DoublyLinkedList();
+
+linkedList.append(1).append(2).append(3).append(4);
+
+linkedList.reverse();
+
+console.log(linkedList.toString());
+
+linkedList.reverse().reverse();
+
+console.log(linkedList.toString());
