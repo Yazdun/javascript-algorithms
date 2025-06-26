@@ -1,24 +1,25 @@
 import LinkedList from "../data-structures/linked-list/LinkedList";
 
-class Queue {
+class Stack {
   constructor() {
     this.linkedList = new LinkedList();
   }
 
-  enqueue(value) {
-    this.linkedList.append(value);
+  push(value) {
+    this.linkedList.prepend(value);
   }
 
-  dequeue() {
-    let removedNode = this.linkedList.deleteHead();
-
-    return removedNode ? removedNode.value : null;
+  pop() {
+    const removedHead = this.linkedList.deleteHead();
+    return removedHead ? removedHead.value : null;
   }
 
   peek() {
-    if (this.isEmpty()) return null;
+    return this.linkedList.head ? this.linkedList.head.value : null;
+  }
 
-    return this.linkedList.head.value;
+  toArray() {
+    return this.linkedList.toArray().map((i) => i.value);
   }
 
   isEmpty() {
@@ -30,4 +31,4 @@ class Queue {
   }
 }
 
-export default Queue;
+export default Stack;
