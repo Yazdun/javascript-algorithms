@@ -25,7 +25,7 @@ Remember that each data has its own trade-offs. And you need to pay attention mo
 - `B` [Doubly Linked List](src/data-structures/doubly-linked-list) X
 - `B` [Queue](src/data-structures/queue) X
 - `B` [Stack](src/data-structures/stack) X
-- `B` [Hash Table](src/data-structures/hash-table)
+- `B` [Hash Table](src/data-structures/hash-table) X
 - `B` [Heap](src/data-structures/heap) - max and min heap versions
 - `B` [Priority Queue](src/data-structures/priority-queue)
 - `A` [Trie](src/data-structures/trie)
