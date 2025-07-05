@@ -26,15 +26,15 @@ Remember that each data has its own trade-offs. And you need to pay attention mo
 - `B` [Queue](src/data-structures/queue) X
 - `B` [Stack](src/data-structures/stack) X
 - `B` [Hash Table](src/data-structures/hash-table) X
-- `B` [Heap](src/data-structures/heap) - max and min heap versions
-- `B` [Priority Queue](src/data-structures/priority-queue)
+- `B` [Heap](src/data-structures/heap) - max and min heap versions X
+- `B` [Priority Queue](src/data-structures/priority-queue) X
 - `A` [Trie](src/data-structures/trie)
-- `A` [Tree](src/data-structures/tree)
-  - `A` [Binary Search Tree](src/data-structures/tree/binary-search-tree)
-  - `A` [AVL Tree](src/data-structures/tree/avl-tree)
-  - `A` [Red-Black Tree](src/data-structures/tree/red-black-tree)
-  - `A` [Segment Tree](src/data-structures/tree/segment-tree) - with min/max/sum range queries examples
-  - `A` [Fenwick Tree](src/data-structures/tree/fenwick-tree) (Binary Indexed Tree)
+- `A` [Tree](src/data-structures/tree) X
+  - `A` [Binary Search Tree](src/data-structures/tree/binary-search-tree) X
+  - `A` [AVL Tree](src/data-structures/tree/avl-tree) X
+  - `A` [Red-Black Tree](src/data-structures/tree/red-black-tree) X
+  - `A` [Segment Tree](src/data-structures/tree/segment-tree) - with min/max/sum range queries examples X
+  - `A` [Fenwick Tree](src/data-structures/tree/fenwick-tree) (Binary Indexed Tree) X
 - `A` [Graph](src/data-structures/graph) (both directed and undirected)
 - `A` [Disjoint Set](src/data-structures/disjoint-set) - a union–find data structure or merge–find set
 - `A` [Bloom Filter](src/data-structures/bloom-filter)
